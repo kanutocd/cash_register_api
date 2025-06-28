@@ -6,7 +6,6 @@ class Promo < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :product_id, case_sensitive: false }
   validates :promo_type, presence: true, inclusion: { in: PROMO_TYPES }
   validates :trigger_qty, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :active, inclusion: { in: [ true, false ] }
 
   validates :free_qty,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 },
