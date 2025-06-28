@@ -22,4 +22,9 @@ RSpec.describe Product, type: :model do
       expect(Product.active).not_to include(inactive_product)
     end
   end
+
+  describe 'associations' do
+    it { should have_many(:cart_items).dependent(:destroy) }
+    it { should have_many(:promos).dependent(:destroy) }
+  end
 end
