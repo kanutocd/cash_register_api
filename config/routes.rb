@@ -5,6 +5,9 @@ Rails.application.routes.draw do
       resources :products do
         resources :promos, except: %i[show]
       end
+      resources :cart_items, except: %i[show]
+      delete "cart", to: "cart_items#clear"
+      get "cart/total", to: "cart_items#total"
     end
   end
 
