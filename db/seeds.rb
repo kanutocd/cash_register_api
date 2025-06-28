@@ -45,7 +45,7 @@ promos_data = [
   },
   {
     product_code: 'SR1',
-    name: 'EUR0.50 Off on 3 or more',
+    name: '€0.50 Off on 3 or more',
     promo_type: 'fixed_discount',
     trigger_qty: 3,
     discount_amount: 0.50

@@ -31,9 +31,9 @@ RSpec.describe CartItem, type: :model do
       end
     end
 
-    describe '#total_quantity' do
-      it 'returns the quantity with no changes' do
-        expect(cart_item.total_quantity).to eq(2)
+    describe '#free_quantity' do
+      it 'returns zero free quantity' do
+        expect(cart_item.free_quantity).to eq(0)
       end
     end
   end
@@ -46,21 +46,21 @@ RSpec.describe CartItem, type: :model do
     context 'buy_x_get_y_free' do
       let(:promo) { create(:promo, product:, promo_type: 'buy_x_get_y_free', trigger_qty: 2, free_qty: 1) }
 
-      describe '#total_quantity' do
-        it 'returns the total quantity including free items' do
-          expect(cart_item.total_quantity).to eq(3)
+      describe '#free_quantity' do
+        it 'returns correct number of free items' do
+          expect(cart_item.free_quantity).to eq(1)
         end
       end
 
       describe '#total_price' do
-        it 'returns the total price without free items' do
+        it 'returns the total price' do
           expect(cart_item.total_price).to eq(200)
         end
       end
 
       describe '#discount_amount' do
-        it 'returns the correct discount amount based on the free items' do
-          expect(cart_item.discount_price).to eq(100)
+        it 'returns the no discount amount' do
+          expect(cart_item.discount_price).to eq(0)
         end
       end
     end
@@ -68,9 +68,9 @@ RSpec.describe CartItem, type: :model do
     context 'fixed_discount' do
       let(:promo) { create(:promo, product:, promo_type: 'fixed_discount', discount_amount: 50, trigger_qty: 2) }
 
-      describe '#total_quantity' do
-        it 'returns the same total quantity' do
-          expect(cart_item.total_quantity).to eq(2)
+      describe '#free_quantity' do
+        it 'returns zero free items' do
+          expect(cart_item.free_quantity).to eq(0)
         end
       end
 

@@ -40,6 +40,7 @@ RSpec.describe Api::V1::CartItemsController, type: :controller do
       json_response = JSON.parse(response.body)
       expect(json_response['items_count']).to eq(3)
       expect(json_response['total'].to_f).to be > 0
+      expect(json_response.keys).to contain_exactly('subtotal', 'total', 'total_discount', 'items_count', 'total_free_items')
     end
   end
 

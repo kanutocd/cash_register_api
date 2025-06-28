@@ -55,12 +55,12 @@ RSpec.describe Promo, type: :model do
     let(:unit_price) { 10.0 }
 
     context "when promo is not applicable" do
-      it "returns total without discount" do
+      it "returns total without discount and no free items" do
         allow(promo).to receive(:active?).and_return(false)
 
         result = promo.apply_discount(quantity, unit_price)
 
-        expect(result).to eq({ total: 50.0, discount: 0, quantity: 5 })
+        expect(result).to eq({ total: 50.0, discount: 0, free_items: 0 })
       end
     end
 
@@ -79,7 +79,7 @@ RSpec.describe Promo, type: :model do
         it "applies buy_x_get_y_free discount" do
           result = promo.apply_discount(quantity, unit_price)
 
-          expect(result).to eq({ total: 50.0, discount: 20.0, quantity: 7 })
+          expect(result).to eq({ total: 50.0, discount: 0, free_items: 2 })
         end
       end
 
@@ -92,7 +92,7 @@ RSpec.describe Promo, type: :model do
         it "applies percentage_discount" do
           result = promo.apply_discount(quantity, unit_price)
 
-          expect(result).to eq({ total: 40.0, discount: 10.0, quantity: 5 })
+          expect(result).to eq({ total: 40.0, discount: 10.0, free_items: 0 })
         end
       end
 
@@ -105,7 +105,7 @@ RSpec.describe Promo, type: :model do
         it "applies fixed_discount" do
           result = promo.apply_discount(quantity, unit_price)
 
-          expect(result).to eq({ total: 45.0, discount: 5.0, quantity: 5 })
+          expect(result).to eq({ total: 45.0, discount: 5.0, free_items: 0 })
         end
       end
     end

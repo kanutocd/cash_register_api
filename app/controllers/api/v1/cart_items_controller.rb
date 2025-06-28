@@ -7,7 +7,7 @@ module Api
         @cart_items = CartItem.includes(:product)
         render json: @cart_items.as_json(
           include: { product: { include: :promos } },
-          methods: %i[total_price discount_price total_quantity]
+          methods: %i[total_price discount_price free_quantity]
         )
       end
 
@@ -23,7 +23,7 @@ module Api
         if @cart_item.save
           render json: @cart_item.as_json(
             include: { product: { include: :promos } },
-            methods: %i[total_price discount_price total_quantity]
+            methods: %i[total_price discount_price free_quantity]
           ), status: :created
         else
           render json: {
@@ -37,7 +37,7 @@ module Api
         if @cart_item.update(cart_item_params)
           render json: @cart_item.as_json(
             include: { product: { include: :promos } },
-            methods: %i[total_price discount_price total_quantity]
+            methods: %i[total_price discount_price free_quantity]
           )
         else
           render json: {
@@ -59,15 +59,14 @@ module Api
 
       def total
         cart_items = CartItem.includes(:product)
-        total_amount = cart_items.sum(&:total_price)
-        total_discount = cart_items.sum(&:discount_price)
-        items_count = cart_items.sum(&:total_quantity)
+        total_free_items = cart_items.sum(&:free_quantity)
 
         render json: {
           subtotal: cart_items.sum { |item| item.quantity * item.product.price },
-          total_discount:,
-          total: total_amount,
-          items_count:
+          total_discount: cart_items.sum(&:discount_price),
+          total: cart_items.sum(&:total_price),
+          total_free_items:,
+          items_count: total_free_items + cart_items.sum(&:quantity)
         }
       end
 

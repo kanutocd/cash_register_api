@@ -24,7 +24,7 @@ class Promo < ApplicationRecord
 
   def apply_discount(quantity, unit_price)
     if !active? || quantity < trigger_qty || Promo::PROMO_TYPES.exclude?(promo_type)
-      return { total: quantity * unit_price, discount: 0, quantity: }
+      return { total: quantity * unit_price, discount: 0, free_items: 0 }
     end
 
     case promo_type
@@ -40,20 +40,18 @@ class Promo < ApplicationRecord
   private
 
   def apply_buy_x_get_y_free(quantity, unit_price)
-    free_items = (quantity / trigger_qty) * free_qty
-
-    { total: quantity * unit_price, discount: free_items * unit_price, quantity: quantity + free_items }
+    { total: quantity * unit_price, discount: 0, free_items: (quantity / trigger_qty) * free_qty }
   end
 
   def apply_percentage_discount(quantity, unit_price)
     discount = (quantity * unit_price) * (discount_percentage / 100.0)
     total = (quantity * unit_price) - discount
-    { total:, discount:, quantity: }
+    { total:, discount:, free_items: 0 }
   end
 
   def apply_fixed_discount(quantity, unit_price)
     discount = quantity * discount_amount
     total = (quantity * unit_price) - discount
-    { total:, discount:, quantity: }
+    { total:, discount:, free_items: 0 }
   end
 end

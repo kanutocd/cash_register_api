@@ -12,8 +12,8 @@ class CartItem < ApplicationRecord
     fetch_promo_perk(:discount) || 0
   end
 
-  def total_quantity
-    fetch_promo_perk(:quantity) || quantity
+  def free_quantity
+    fetch_promo_perk(:free_items) || 0
   end
 
   private
