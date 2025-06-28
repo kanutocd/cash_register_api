@@ -28,5 +28,23 @@ module CashRegisterApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Use Rack::Cors to handle Cross-Origin Resource Sharing (CORS)
+    config.middleware.insert_before 0, Rack::Cors do
+        allow do
+          origins "*"
+          resource "*", headers: :any,
+                        methods: %i[get post put patch delete options head]
+        end
+    end
+
+    # Configure generators and tell them to use RSpec for testing.
+    config.generators do |g|
+      g.test_framework :rspec
+      g.helper_specs false
+      g.view_specs false
+      g.routing_specs false
+      g.request_specs false
+    end
   end
 end
