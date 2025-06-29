@@ -81,8 +81,8 @@ Support for three distinct promotion types:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/cash-register-api.git
-cd cash-register-api
+git clone https://github.com/kanutocd/cash_register_api.git
+cd cash_register_api
 ```
 
 ### 2. Install Dependencies
